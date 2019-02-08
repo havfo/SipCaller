@@ -18,7 +18,7 @@ import Account from './Account/Account';
 import SessionHistory from './SessionHistory/SessionHistory';
 import Sessions from './Sessions/Sessions';
 import Dialer from './Dialer/Dialer';
-import SessionView from './Center/SessionView/SessionView';
+import SessionView from './SessionView/SessionView';
 
 const styles = (theme) => ({
 	root : {
