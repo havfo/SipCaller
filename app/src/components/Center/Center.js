@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Login from './Login/Login';
 import Dialer from './Dialer/Dialer';
 import SessionView from './SessionView/SessionView';
 
@@ -27,7 +26,7 @@ const Center = (props) =>
 				<Paper className={ classes.paper }>
 					{ registered ?
 						<Dialer />
-						:<Login />
+						:null
 					}
 				</Paper>
 			</Grid>

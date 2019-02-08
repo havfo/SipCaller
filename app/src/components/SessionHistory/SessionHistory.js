@@ -3,22 +3,21 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
 	setRequestUri
-} from '../../../actions/stateActions';
+} from '../../actions/stateActions';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
 	paper: {
-		padding : theme.spacing.unit * 2,
-		height  : '30vh'
+		padding : theme.spacing.unit * 2
 	}
 });
 
-const History  = (props) =>
+const SessionHistory  = (props) =>
 {
 	const {
 		sessionHistory,
@@ -28,37 +27,42 @@ const History  = (props) =>
 
 	return (
 		<Paper className={classes.paper}>
-			<Typography variant='h6'>
-				Call log
-			</Typography>
-			<List>
-				{ sessionHistory.map((entry, index) =>
-				{
-					return (
-						<ListItem
-							key={ index }
-							button
-							onClick=
-							{
-								() =>
+			{ sessionHistory.length > 0 ?
+				<List>
+					{ sessionHistory.map((entry, index) =>
+					{
+						return (
+							<ListItem
+								key={ index }
+								button
+								onClick=
 								{
-									setRequestUri(entry.sipUri);
+									() =>
+									{
+										setRequestUri(entry.sipUri);
+									}
 								}
-							}
-						>
-							<ListItemText
-								primary={ entry.displayName }
-								secondary={ entry.sipUri }
-							/>
-						</ListItem>
-					);
-				})}
-			</List>
+							>
+								<ListItemText
+									primary={ entry.displayName }
+									secondary={ entry.sipUri }
+								/>
+							</ListItem>
+						);
+					})}
+				</List>
+				:<Typography
+					color='inherit'
+					noWrap
+				>
+					No history
+				</Typography>
+			}
 		</Paper>
 	);
 };
 
-History.propTypes =
+SessionHistory.propTypes =
 {
 	sessionHistory : PropTypes.array.isRequired,
 	setRequestUri  : PropTypes.func.isRequired
@@ -74,4 +78,4 @@ const mapDispatchToProps = dispatch =>
 	setRequestUri : (requestUri) => dispatch(setRequestUri({ requestUri }))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(History));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SessionHistory));
