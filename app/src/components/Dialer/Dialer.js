@@ -12,7 +12,8 @@ import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
 import CallIcon from '@material-ui/icons/Call';
 
-const styles = (theme) => ({
+const styles = (theme) =>
+({
 	grid : {
 		width : '50vw'
 	},

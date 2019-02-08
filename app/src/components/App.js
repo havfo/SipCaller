@@ -20,7 +20,8 @@ import Sessions from './Sessions/Sessions';
 import Dialer from './Dialer/Dialer';
 import SessionView from './SessionView/SessionView';
 
-const styles = (theme) => ({
+const styles = (theme) =>
+({
 	root : {
 		width  : '100%',
 		height : '100%'
@@ -103,6 +104,7 @@ class App extends Component
 
 		return (
 			<div className={ classes.root }>
+				<SessionView />
 				<AppBar
 					position='static'
 					style={{ background : 'transparent', boxShadow : 'none' }}
@@ -239,7 +241,6 @@ class App extends Component
 						<p>Account</p>
 					</MenuItem>
 				</Menu>
-				<SessionView />
 			</div>
 		);
 	}

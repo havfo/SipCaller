@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = (theme) => ({
-	videoView: 
+const styles = (theme) =>
+({
+	videoView :
 	{
-		objectFit: 'cover',
-    	width: '100%',
-    	height: '100%',
-	},
+		objectFit : 'cover',
+		width     : '100%',
+		height    : '100%'
+	}
 });
+
 class MediaView extends Component
 {
 	constructor(props)
@@ -24,7 +26,8 @@ class MediaView extends Component
 		const { classes } = this.props;
 
 		return (
-			<video className={classes.videoView}
+			<video
+				className={ classes.videoView }
 				ref='video'
 				autoPlay
 				playsInline

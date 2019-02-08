@@ -16,7 +16,8 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 
-const styles = (theme) => ({
+const styles = (theme) =>
+({
 	paper : {
 		padding : theme.spacing.unit * 2
 	}

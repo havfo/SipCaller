@@ -18,7 +18,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 
-const styles = (theme) => ({
+const styles = (theme) =>
+({
 	paper : {
 		padding : theme.spacing.unit * 2,
 		width   : '20vw'

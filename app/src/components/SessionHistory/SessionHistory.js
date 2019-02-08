@@ -11,7 +11,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-const styles = theme => ({
+const styles = (theme) =>
+({
 	paper: {
 		padding : theme.spacing.unit * 2
 	}

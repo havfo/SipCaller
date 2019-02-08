@@ -9,48 +9,44 @@ import VolumeOn from '@material-ui/icons/VolumeUp';
 import CallEndIcon from '@material-ui/icons/CallEnd';
 import MicIcon from '@material-ui/icons/Mic';
 
-const styles = theme => ({
-	fab: 
+const styles = (theme) =>
+({
+	fab :
 	{
-		margin: theme.spacing.unit,
-		position: 'relative',
+		margin   : theme.spacing.unit,
+		position : 'relative',
 	},
-	extendedIcon: 
+	extendedIcon :
 	{
-	  	marginRight: theme.spacing.unit,
+		marginRight : theme.spacing.unit,
 	},
-	sessionAll:
+	sessionAll :
 	{
-		position: 'relative',
-		width: '100%',
+		position : 'relative',
+		width    : '100%',
 	},
-	buttonList:
+	buttonList :
 	{
-		position: 'absolute',
-		bottom: 0,
-		transform: 'translate(-50%, -50%)',
-		left: '50%',
+		position  : 'absolute',
+		bottom    : 0,
+		transform : 'translate(-50%, -50%)',
+		left      : '50%'
 	},
-	sessionWrapper:
+	sessionWrapper :
 	{
-		textAlign: 'center',
-		width: '100%',
-		height: '100%',
+		textAlign : 'center',
+		width     : '100%',
+		height    : '100%'
 	},
-	selfViewButton:
+	sessionView :
 	{
-		
-	},
-	sessionView:
-	{
-		position: 'absolute',
-		width: '100%',
-		height: '100%',
-		top: 0,
-		zIndex: -1,
+		position : 'absolute',
+		width    : '100%',
+		height   : '100%',
+		top      : 0
 	}
-  });
-  
+});
+
 const SessionView = (props) =>
 {
 	const {
@@ -59,30 +55,30 @@ const SessionView = (props) =>
 	} = props;
 
 	return (
-		<div className={classes.sessionView}>
+		<div className={ classes.sessionView }>
 			{ session && session.remoteStream ?
-				<div className={classes.sessionWrapper}>
+				<div className={ classes.sessionWrapper }>
 					<MediaView
 						mediaStream={ session.remoteStream }
 					/>
-					<div className={classes.sessionAll}>
-						<div className={classes.buttonList}>
-							<Fab position='static' color='primary' aria-label='Add' className={classes.fab}>
+					<div className={ classes.sessionAll }>
+						<div className={ classes.buttonList }>
+							<Fab position='static' color='primary' aria-label='Add' className={ classes.fab }>
 								<AddIcon />
 							</Fab>
-							<Fab aria-label="Mic" className={classes.fab}>
+							<Fab aria-label='Mic' className={ classes.fab }>
 								<MicIcon />
 							</Fab>
-							<Fab aria-label="Volume on" className={classes.fab}>
-								<VolumeOn className={classes.fab} />
+							<Fab aria-label='Volume on' className={ classes.fab }>
+								<VolumeOn className={ classes.fab } />
 							</Fab>
-							<Fab color="secondary" aria-label="Hand up" className={classes.fab}>
+							<Fab color='secondary' aria-label='Hand up' className={ classes.fab }>
 								<CallEndIcon />
-							</Fab>				
+							</Fab>
 						</div>
 					</div>
-				</div>	
-			:null
+				</div>
+				:null
 			}
 		</div>
 	);
