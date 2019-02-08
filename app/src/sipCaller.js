@@ -59,14 +59,14 @@ export default class SipCaller
 				traceSip  : true
 			},
 			sessionDescriptionHandlerFactoryOptions : {
-				rtcConfiguration : {
-					iceServers : [
-						{
+				peerConnectionOptions : {
+					rtcConfiguration : {
+						iceServers : [{
 							urls       : 'turn:turn.uninett.no:443?transport=tcp',
 							username   : 'websip',
 							credential : 'websip'
-						}
-					]
+						}]
+					}
 				}
 			}
 		});
