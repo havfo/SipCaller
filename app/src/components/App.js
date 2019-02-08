@@ -18,6 +18,7 @@ import Account from './Account/Account';
 import SessionHistory from './SessionHistory/SessionHistory';
 import Sessions from './Sessions/Sessions';
 import Dialer from './Dialer/Dialer';
+import SessionView from './Center/SessionView/SessionView';
 
 const styles = (theme) => ({
 	root : {
@@ -237,6 +238,7 @@ class App extends Component
 						<p>Account</p>
 					</MenuItem>
 				</Menu>
+				<SessionView />
 			</div>
 		);
 	}
