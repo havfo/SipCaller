@@ -60,10 +60,6 @@ const SessionView = (props) =>
 
 	return (
 		<div className={classes.sessionView}>
-			{ session ?
-				session.sipSession.remoteIdentity.friendlyName
-				:null
-			}
 			{ session && session.remoteStream ?
 				<div className={classes.sessionWrapper}>
 					<MediaView
