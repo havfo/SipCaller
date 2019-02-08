@@ -105,7 +105,7 @@ class App extends Component
 			<div className={ classes.root }>
 				<AppBar
 					position='static'
-					style={{ background : 'transparent', boxShadow : 'none', zIndex : 10 }}
+					style={{ background : 'transparent', boxShadow : 'none' }}
 				>
 					<Toolbar>
 						<Typography
