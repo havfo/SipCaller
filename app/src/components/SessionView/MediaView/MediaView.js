@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 
+const styles = (theme) => ({
+	videoView: 
+	{
+		objectFit: 'cover',
+    	width: '100%',
+    	height: '100%',
+	},
+});
 class MediaView extends Component
 {
 	constructor(props)
@@ -12,8 +21,10 @@ class MediaView extends Component
 
 	render()
 	{
+		const { classes } = this.props;
+
 		return (
-			<video
+			<video className={classes.videoView}
 				ref='video'
 				autoPlay
 				playsInline
@@ -53,11 +64,12 @@ class MediaView extends Component
 			video.srcObject = null;
 		}
 	}
-};
+}
 
 MediaView.propTypes =
 {
-	mediaStream : PropTypes.any
+	mediaStream : PropTypes.any,
+	classes     : PropTypes.object.isRequired
 };
 
-export default MediaView;
+export default withStyles(styles)(MediaView);
