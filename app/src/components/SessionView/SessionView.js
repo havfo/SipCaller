@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { withSipCallerContext } from '../../sipCallerContext';
 import MediaView from './MediaView/MediaView';
 import { withStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
@@ -50,6 +51,7 @@ const styles = (theme) =>
 const SessionView = (props) =>
 {
 	const {
+		sipCaller,
 		session,
 		classes
 	} = props;
@@ -73,7 +75,15 @@ const SessionView = (props) =>
 								<VolumeOn className={ classes.fab } />
 							</Fab>
 							<Fab color='secondary' aria-label='Hand up' className={ classes.fab }>
-								<CallEndIcon />
+								<CallEndIcon 
+									onClick=
+									{
+										() =>
+										{
+											sipCaller.terminate(session.sipSession);
+										}
+									}
+								/>
 							</Fab>
 						</div>
 					</div>
@@ -86,7 +96,8 @@ const SessionView = (props) =>
 
 SessionView.propTypes =
 {
-	session : PropTypes.object
+	sipCaller : PropTypes.object.isRequired,
+	session   : PropTypes.object
 };
 
 const mapStateToProps = (state) =>
@@ -94,4 +105,6 @@ const mapStateToProps = (state) =>
 	session : state.sessions[state.userStatus.currentSession]
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(SessionView));
+export default withSipCallerContext(
+	connect(mapStateToProps, null)(withStyles(styles)(SessionView))
+);
