@@ -14,7 +14,7 @@ import CallIcon from '@material-ui/icons/Call';
 
 const styles = (theme) => ({
 	grid : {
-		width : '40vw'
+		width : '50vw'
 	},
 	call : {
 		position        : 'relative',
@@ -52,7 +52,7 @@ const styles = (theme) => ({
 		transition                   : theme.transitions.create('width'),
 		width                        : '100%',
 		[theme.breakpoints.up('md')] : {
-			width : 200
+			width : '100%'
 		}
 	}
 });

@@ -18,11 +18,11 @@ body
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	background-color: rgba(100, 100, 100, 1.0);
-	/* background-image: url('./background.svg');
+	background-image: url('./background.svg');
 	background-attachment: fixed;
 	background-position: center;
 	background-size: cover;
-	background-repeat: no-repeat; */
+	background-repeat: no-repeat;
 }
 
 code
