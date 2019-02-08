@@ -13,7 +13,8 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) =>
 ({
-	paper: {
+	paper :
+	{
 		padding : theme.spacing.unit * 2
 	}
 });
@@ -36,13 +37,7 @@ const SessionHistory  = (props) =>
 							<ListItem
 								key={ index }
 								button
-								onClick=
-								{
-									() =>
-									{
-										setRequestUri(entry.sipUri);
-									}
-								}
+								onClick={ () => setRequestUri(entry.sipUri) }
 							>
 								<ListItemText
 									primary={ entry.displayName }
@@ -69,12 +64,12 @@ SessionHistory.propTypes =
 	setRequestUri  : PropTypes.func.isRequired
 };
 
-const mapStateToProps = state =>
+const mapStateToProps = (state) =>
 ({
 	sessionHistory : state.sessionHistory
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
 ({
 	setRequestUri : (requestUri) => dispatch(setRequestUri({ requestUri }))
 });

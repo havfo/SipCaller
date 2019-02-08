@@ -14,17 +14,19 @@ import CallIcon from '@material-ui/icons/Call';
 
 const styles = (theme) =>
 ({
-	grid : {
+	grid :
+	{
 		width : '50vw'
 	},
-	call : {
+	call :
+	{
 		position        : 'relative',
 		borderRadius    : theme.shape.borderRadius,
 		backgroundColor : fade(theme.palette.common.white, 0.15),
 		'&:hover'       : {
 			backgroundColor : fade(theme.palette.common.white, 0.25),
 		},
-		marginRight                  : theme.spacing.unit * 2,
+		// marginRight                  : theme.spacing.unit * 2,
 		marginLeft                   : 0,
 		width                        : '100%',
 		[theme.breakpoints.up('sm')] : {
@@ -32,7 +34,8 @@ const styles = (theme) =>
 			width      : 'auto'
 		}
 	},
-	callIcon : {
+	callIcon :
+	{
 		width          : theme.spacing.unit * 5,
 		height         : '100%',
 		position       : 'absolute',
@@ -41,11 +44,13 @@ const styles = (theme) =>
 		alignItems     : 'center',
 		justifyContent : 'center'
 	},
-	inputRoot : {
+	inputRoot :
+	{
 		color : 'inherit',
 		width : '100%'
 	},
-	inputInput: {
+	inputInput :
+	{
 		paddingTop                   : theme.spacing.unit,
 		paddingRight                 : theme.spacing.unit,
 		paddingBottom                : theme.spacing.unit,
@@ -81,14 +86,8 @@ const Dialer = (props) =>
 							root  : classes.inputRoot,
 							input : classes.inputInput
 						}}
-						value={ requestUri }
-						onChange=
-						{
-							(e) =>
-							{
-								setRequestUri(e.target.value);
-							}
-						}
+						value={ requestUri || '' }
+						onChange={ (event) => setRequestUri(event.target.value) }
 					/>
 				</div>
 			</Grid>
@@ -97,13 +96,7 @@ const Dialer = (props) =>
 					variant='contained'
 					color='primary'
 					disabled={ !registered }
-					onClick =
-					{
-						() =>
-						{
-							sipCaller.invite(requestUri);
-						}
-					}
+					onClick ={ () => sipCaller.invite(requestUri) }
 				>
 					Call
 				</Button>
@@ -121,13 +114,13 @@ Dialer.propTypes =
 	classes       : PropTypes.object.isRequired
 };
 
-const mapStateToProps = state =>
+const mapStateToProps = (state) =>
 ({
 	requestUri : state.user.requestUri,
 	registered : state.userStatus.registered
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
 ({
 	setRequestUri : (requestUri) => dispatch(setRequestUri({ requestUri }))
 });

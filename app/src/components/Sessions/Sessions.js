@@ -18,8 +18,17 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) =>
 ({
-	paper : {
+	paper :
+	{
 		padding : theme.spacing.unit * 2
+	},
+	iconGreen :
+	{
+		color : 'green'
+	},
+	iconRed :
+	{
+		color : 'red'
 	}
 });
 
@@ -50,19 +59,15 @@ const Sessions = (props) =>
 								key={ callId }
 								button
 								selected={ callId === currentSession }
-								onClick=
-								{
-									() =>
-									{
-										setCurrentSession(callId);
-									}
-								}
+								onClick={ () => setCurrentSession(callId) }
+								disabled={ session.sessionState === sessionStates.TERMINATED }
 							>
 								<ListItemText
 									primary={ displayName }
 									secondary={ sipUri }
 								/>
 								<IconButton
+									className={ answer ? classes.iconGreen : classes.iconRed }
 									aria-label='Answer'
 									onClick=
 									{

@@ -2,49 +2,46 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withSipCallerContext } from '../../sipCallerContext';
-import MediaView from './MediaView/MediaView';
 import { withStyles } from '@material-ui/core/styles';
+import * as sessionStates from '../../sessionStates';
+import MediaView from './MediaView/MediaView';
+import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import VolumeOn from '@material-ui/icons/VolumeUp';
+import VolumeOnIcon from '@material-ui/icons/VolumeUp';
 import CallEndIcon from '@material-ui/icons/CallEnd';
 import MicIcon from '@material-ui/icons/Mic';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Divider from '@material-ui/core/Divider';
 
 const styles = (theme) =>
 ({
-	fab :
+	button :
 	{
-		margin   : theme.spacing.unit,
-		position : 'relative',
-	},
-	extendedIcon :
-	{
-		marginRight : theme.spacing.unit,
-	},
-	sessionAll :
-	{
-		position : 'relative',
-		width    : '100%',
+		margin : theme.spacing.unit
 	},
 	buttonList :
 	{
 		position  : 'absolute',
-		bottom    : 0,
-		transform : 'translate(-50%, -50%)',
+		bottom    : '1vh',
+		transform : 'translate(-50%, 0)',
 		left      : '50%'
 	},
-	sessionWrapper :
+	card :
 	{
-		textAlign : 'center',
-		width     : '100%',
-		height    : '100%'
+		position  : 'absolute',
+		bottom    : '50vh',
+		transform : 'translate(-50%, 0)',
+		left      : '50%',
+		textAlign : 'center'
 	},
 	sessionView :
 	{
-		position : 'absolute',
-		width    : '100%',
-		height   : '100%',
-		top      : 0
+		position  : 'absolute',
+		width     : '100%',
+		height    : '100%',
+		textAlign : 'center'
 	}
 });
 
@@ -56,42 +53,76 @@ const SessionView = (props) =>
 		classes
 	} = props;
 
-	return (
-		<div className={ classes.sessionView }>
-			{ session && session.remoteStream ?
-				<div className={ classes.sessionWrapper }>
-					<MediaView
-						mediaStream={ session.remoteStream }
-					/>
-					<div className={ classes.sessionAll }>
-						<div className={ classes.buttonList }>
-							<Fab position='static' color='primary' aria-label='Add' className={ classes.fab }>
-								<AddIcon />
-							</Fab>
-							<Fab aria-label='Mic' className={ classes.fab }>
-								<MicIcon />
-							</Fab>
-							<Fab aria-label='Volume on' className={ classes.fab }>
-								<VolumeOn className={ classes.fab } />
-							</Fab>
-							<Fab color='secondary' aria-label='Hand up' className={ classes.fab }>
-								<CallEndIcon 
-									onClick=
-									{
-										() =>
-										{
-											sipCaller.terminate(session.sipSession);
-										}
-									}
-								/>
-							</Fab>
-						</div>
-					</div>
+	if (session && session.sessionState === sessionStates.TERMINATED)
+	{
+		const sipSession = session.sipSession;
+		const displayName = sipSession.remoteIdentity.displayName || sipSession.remoteIdentity.uri.user;
+		const sipUri = sipSession.remoteIdentity.uri.toString();
+
+		return (
+			<Card className={ classes.card }>
+				<CardContent>
+					<Typography variant='h3' noWrap>
+						Session ended
+					</Typography>
+					<Divider />
+					<Typography variant='h4' noWrap>
+						{ displayName }
+					</Typography>
+					<Typography variant='h5' noWrap>
+						{ sipUri }
+					</Typography>
+				</CardContent>
+			</Card>
+		);
+	}
+
+	if (session && session.remoteStream)
+	{
+		return (
+			<div className={ classes.sessionView }>
+				<MediaView
+					mediaStream={ session.remoteStream }
+				/>
+				<div className={ classes.buttonList }>
+					<Fab
+						className={ classes.button }
+						aria-label='Add'
+						size='large'
+					>
+						<AddIcon />
+					</Fab>
+					<Fab
+						className={ classes.button }
+						aria-label='Mic'
+						size='large'
+					>
+						<MicIcon />
+					</Fab>
+					<Fab
+						className={ classes.button }
+						aria-label='Volume on'
+						size='large'
+					>
+						<VolumeOnIcon />
+					</Fab>
+					<Fab
+						color='secondary'
+						className={ classes.button }
+						aria-label='Hang up'
+						size='large'
+						onClick={ () => sipCaller.terminate(session.sipSession) }
+					>
+						<CallEndIcon />
+					</Fab>
 				</div>
-				:null
-			}
-		</div>
-	);
+			</div>
+		);
+	}
+	else
+	{
+		return null;
+	}
 };
 
 SessionView.propTypes =

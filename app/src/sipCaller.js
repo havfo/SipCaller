@@ -224,7 +224,7 @@ export default class SipCaller
 				logger.debug('SipSession removed [sipSession: %o]', sipSession);
 
 				store.dispatch(stateActions.removeSession({ sipSession }));
-			}, 10000);
+			}, 5000);
 		});
 
 		store.dispatch(stateActions.addSession({ sipSession, direction }));

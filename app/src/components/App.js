@@ -58,6 +58,13 @@ class App extends Component
 		currentMenu        : null
 	};
 
+	handleExited = () =>
+	{
+		this.setState({
+			currentMenu : null
+		});
+	};
+
 	handleMenuOpen = (event, menu) =>
 	{
 		this.setState({
@@ -69,8 +76,7 @@ class App extends Component
 	handleMenuClose = () =>
 	{
 		this.setState({
-			anchorEl    : null,
-			currentMenu : null
+			anchorEl    : null
 		});
 
 		this.handleMobileMenuClose();
@@ -124,12 +130,7 @@ class App extends Component
 							<IconButton
 								aria-owns={ isMenuOpen && currentMenu === 'sessions' ? 'material-appbar' : undefined }
 								aria-haspopup='true'
-								onClick={
-									(event) =>
-									{
-										this.handleMenuOpen(event, 'sessions');
-									}
-								}
+								onClick={ (event) => this.handleMenuOpen(event, 'sessions') }
 								color='inherit'
 							>
 								<Badge badgeContent={ sessions } color='secondary'>
@@ -139,12 +140,7 @@ class App extends Component
 							<IconButton
 								aria-owns={ isMenuOpen && currentMenu === 'history' ? 'material-appbar' : undefined }
 								aria-haspopup='true'
-								onClick={
-									(event) =>
-									{
-										this.handleMenuOpen(event, 'history');
-									}
-								}
+								onClick={ (event) => this.handleMenuOpen(event, 'history') }
 								color='inherit'
 							>
 								<History />
@@ -152,19 +148,18 @@ class App extends Component
 							<IconButton
 								aria-owns={ isMenuOpen && currentMenu === 'account' ? 'material-appbar' : undefined }
 								aria-haspopup='true'
-								onClick={
-									(event) =>
-									{
-										this.handleMenuOpen(event, 'account');
-									}
-								}
+								onClick={ (event) => this.handleMenuOpen(event, 'account') }
 								color='inherit'
 							>
 								<AccountCircle />
 							</IconButton>
 						</div>
 						<div className={ classes.sectionMobile }>
-							<IconButton aria-haspopup='true' onClick={ this.handleMobileMenuOpen } color='inherit'>
+							<IconButton
+								aria-haspopup='true'
+								onClick={ this.handleMobileMenuOpen }
+								color='inherit'
+							>
 								<MoreIcon />
 							</IconButton>
 						</div>
@@ -176,6 +171,7 @@ class App extends Component
 					transformOrigin={{ vertical : 'top', horizontal : 'left' }}
 					open={ isMenuOpen }
 					onClose={ this.handleMenuClose }
+					onExited={ this.handleExited }
 					getContentAnchorEl={ null }
 				>
 					{ currentMenu === 'sessions' ?
@@ -200,12 +196,7 @@ class App extends Component
 					getContentAnchorEl={ null }
 				>
 					<MenuItem
-						onClick={
-							(event) =>
-							{
-								this.handleMenuOpen(event, 'sessions');
-							}
-						}
+						onClick={ (event) => this.handleMenuOpen(event, 'sessions') }
 					>
 						<IconButton color='inherit'>
 							<Badge badgeContent={ sessions } color='secondary'>
@@ -215,12 +206,7 @@ class App extends Component
 						<p>Sessions</p>
 					</MenuItem>
 					<MenuItem
-						onClick={
-							(event) =>
-							{
-								this.handleMenuOpen(event, 'history');
-							}
-						}
+						onClick={ (event) => this.handleMenuOpen(event, 'history') }
 					>
 						<IconButton color='inherit'>
 							<History />
@@ -228,12 +214,7 @@ class App extends Component
 						<p>Call log</p>
 					</MenuItem>
 					<MenuItem
-						onClick={
-							(event) =>
-							{
-								this.handleMenuOpen(event, 'account');
-							}
-						}
+						onClick={ (event) => this.handleMenuOpen(event, 'account') }
 					>
 						<IconButton color='inherit'>
 							<AccountCircle />

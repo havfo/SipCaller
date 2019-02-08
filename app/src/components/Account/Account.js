@@ -20,7 +20,8 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) =>
 ({
-	paper : {
+	paper :
+	{
 		padding : theme.spacing.unit * 2,
 		width   : '20vw'
 	}
@@ -54,13 +55,7 @@ const Account = (props) =>
 							label='Displayname'
 							value={ displayName || '' }
 							style ={{ width: '100%' }}
-							onChange =
-							{
-								(e) =>
-								{
-									setDisplayName(e.target.value);
-								}
-							}
+							onChange ={ (event) => setDisplayName(event.target.value) }
 						/>
 					</Grid>
 					<Grid item xs={ 12 }>
@@ -70,13 +65,7 @@ const Account = (props) =>
 							type='email'
 							value={ sipUri || '' }
 							style ={{ width: '100%' }}
-							onChange =
-							{
-								(e) =>
-								{
-									setSipUri(e.target.value);
-								}
-							}
+							onChange ={ (event) => setSipUri(event.target.value) }
 						/>
 					</Grid>
 					<Grid item xs={ 12 }>
@@ -86,13 +75,7 @@ const Account = (props) =>
 							type='password'
 							value={ password || '' }
 							style ={{ width: '100%' }}
-							onChange =
-							{
-								(e) =>
-								{
-									setPassword(e.target.value);
-								}
-							}
+							onChange ={ (event) => setPassword(event.target.value) }
 						/>
 					</Grid>
 					<Grid item xs={ 12 }>
@@ -101,13 +84,7 @@ const Account = (props) =>
 							label='Outbound Proxy'
 							value={ outboundProxy || '' }
 							style ={{ width: '100%' }}
-							onChange =
-							{
-								(e) =>
-								{
-									setOutboundProxy(e.target.value);
-								}
-							}
+							onChange ={ (event) => setOutboundProxy(event.target.value) }
 						/>
 					</Grid>
 					<Grid item xs={ 12 }>
@@ -115,12 +92,7 @@ const Account = (props) =>
 							control={
 								<Checkbox
 									checked={ autoRegister }
-									onChange={
-										() =>
-										{
-											setAutoRegister(!autoRegister);
-										}
-									}
+									onChange={ () => setAutoRegister(!autoRegister) }
 								/>
 							}
 							label='Autoregister'
@@ -131,13 +103,7 @@ const Account = (props) =>
 						<Button
 							variant='contained'
 							color='primary'
-							onClick=
-							{
-								(e) =>
-								{
-									sipCaller.register();
-								}
-							}
+							onClick={ () => sipCaller.register() }
 						>
 							Register
 						</Button>
@@ -159,13 +125,7 @@ const Account = (props) =>
 						<Button
 							variant='contained'
 							color='secondary'
-							onClick=
-							{
-								(e) =>
-								{
-									sipCaller.unRegister();
-								}
-							}
+							onClick={ () => sipCaller.unRegister() }
 						>
 							Unregister
 						</Button>
@@ -193,7 +153,7 @@ Account.propTypes =
 	classes          : PropTypes.object.isRequired
 };
 
-const mapStateToProps = state =>
+const mapStateToProps = (state) =>
 ({
 	displayName   : state.user.displayName,
 	sipUri        : state.user.sipUri,
@@ -203,7 +163,7 @@ const mapStateToProps = state =>
 	registered    : state.userStatus.registered
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
 ({
 	setDisplayName : (displayName) => dispatch(setDisplayName({ displayName } )),
 	setSipUri : (sipUri) => dispatch(setSipUri({ sipUri })),
