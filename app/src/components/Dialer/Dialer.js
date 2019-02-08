@@ -62,6 +62,7 @@ const Dialer = (props) =>
 	const {
 		sipCaller,
 		requestUri,
+		registered,
 		setRequestUri,
 		classes
 	} = props;
@@ -93,7 +94,8 @@ const Dialer = (props) =>
 			<Grid item xs={ 3 }>
 				<Button
 					variant='contained'
-					color='secondary' 
+					color='primary'
+					disabled={ !registered }
 					onClick =
 					{
 						() =>
@@ -113,13 +115,15 @@ Dialer.propTypes =
 {
 	sipCaller     : PropTypes.any.isRequired,
 	requestUri    : PropTypes.string,
+	registered    : PropTypes.bool.isRequired,
 	setRequestUri : PropTypes.func.isRequired,
 	classes       : PropTypes.object.isRequired
 };
 
 const mapStateToProps = state =>
 ({
-	requestUri : state.user.requestUri
+	requestUri : state.user.requestUri,
+	registered : state.userStatus.registered
 });
 
 const mapDispatchToProps = dispatch =>

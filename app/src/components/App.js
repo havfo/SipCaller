@@ -22,7 +22,8 @@ import SessionView from './Center/SessionView/SessionView';
 
 const styles = (theme) => ({
 	root : {
-		width : '100%'
+		width  : '100%',
+		height : '100%'
 	},
 	grow: {
 		flexGrow : 1
