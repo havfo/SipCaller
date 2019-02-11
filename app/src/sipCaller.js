@@ -61,11 +61,11 @@ export default class SipCaller
 			sessionDescriptionHandlerFactoryOptions : {
 				peerConnectionOptions : {
 					rtcConfiguration : {
-						iceServers : [{
+						iceServers : [ {
 							urls       : 'turn:turn.uninett.no:443?transport=tcp',
 							username   : 'websip',
 							credential : 'websip'
-						}]
+						} ]
 					}
 				}
 			}
@@ -73,7 +73,7 @@ export default class SipCaller
 
 		this._ua.on('registered', () =>
 		{
-			logger.debug('Registered')
+			logger.debug('Registered');
 
 			store.dispatch(stateActions.setRegistrationMessage({ registrationMessage: 'Success' }));
 			store.dispatch(stateActions.setRegistered({ registered: true }));
@@ -154,9 +154,9 @@ export default class SipCaller
 
 		sipSession.on('directionChanged', () =>
 		{
-			const direction = sipSession.sessionDescriptionHandler.getDirection();
+			const newDirection = sipSession.sessionDescriptionHandler.getDirection();
 
-			if (direction === 'sendrecv')
+			if (newDirection === 'sendrecv')
 			{
 				logger.debug('SipSession not on hold [sipSession: %o]', sipSession);
 			}
@@ -168,63 +168,121 @@ export default class SipCaller
 
 		sipSession.on('progress', (response) =>
 		{
-			logger.debug('SipSession progress [sipSession: %o]', sipSession);
+			logger.debug('SipSession progress [response: %o, sipSession: %o]', response, sipSession);
 
-			store.dispatch(stateActions.setSessionState({ sipSession, sessionState: sessionStates.PROGRESS }));
+			store.dispatch(
+				stateActions.setSessionState({
+					sipSession,
+					sessionState : sessionStates.PROGRESS
+				})
+			);
 		});
 
 		sipSession.on('accepted', (data) =>
 		{
-			logger.debug('SipSession accepted [sipSession: %o]', sipSession);
+			logger.debug('SipSession accepted [data: %o, sipSession: %o]', data, sipSession);
 
-			store.dispatch(stateActions.setSessionState({ sipSession, sessionState: sessionStates.ACCEPTED }));
+			store.dispatch(
+				stateActions.setSessionState({
+					sipSession,
+					sessionState : sessionStates.ACCEPTED
+				})
+			);
 		});
 
 		sipSession.on('bye', (request) =>
 		{
-			logger.debug('SipSession bye [sipSession: %o]', sipSession);
+			logger.debug('SipSession bye [request: %o, sipSession: %o]', request, sipSession);
 
-			store.dispatch(stateActions.setSessionState({ sipSession, sessionState: sessionStates.TERMINATED }));
+			store.dispatch(
+				stateActions.setSessionState({
+					sipSession,
+					sessionState : sessionStates.TERMINATED
+				})
+			);
 		});
 
 		sipSession.on('cancel', () =>
 		{
 			logger.debug('SipSession canceled [sipSession: %o]', sipSession);
 
-			store.dispatch(stateActions.setSessionState({ sipSession, sessionState: sessionStates.CANCELED }));
+			store.dispatch(
+				stateActions.setSessionState({
+					sipSession,
+					sessionState : sessionStates.CANCELED
+				})
+			);
 		});
 
 		sipSession.on('rejected', (response, cause) =>
 		{
-			logger.debug('SipSession rejected [cause: %s, sipSession: %o]', cause, sipSession);
+			logger.debug(
+				'SipSession rejected [response: %o, cause: %s, sipSession: %o]',
+				response,
+				cause,
+				sipSession
+			);
 
-			store.dispatch(stateActions.setSessionState({ sipSession, sessionState: sessionStates.REJECTED }));
+			store.dispatch(
+				stateActions.setSessionState({
+					sipSession,
+					sessionState : sessionStates.REJECTED
+				})
+			);
 		});
 
 		sipSession.on('failed', (response, cause) =>
 		{
-			logger.debug('SipSession failed [cause: %s, sipSession: %o]', cause, sipSession);
+			logger.debug(
+				'SipSession failed [response: %o, cause: %s, sipSession: %o]',
+				response,
+				cause,
+				sipSession
+			);
 
-			store.dispatch(stateActions.setSessionState({ sipSession, sessionState: sessionStates.FAILED }));
+			store.dispatch(
+				stateActions.setSessionState({
+					sipSession,
+					sessionState : sessionStates.FAILED
+				})
+			);
 		});
 
 		sipSession.on('terminated', (message, cause) =>
 		{
-			logger.debug('SipSession terminated [sipSession: %o]', sipSession);
+			logger.debug(
+				'SipSession terminated [message: %o, cause: %s, sipSession: %o]',
+				message,
+				cause,
+				sipSession
+			);
 
-			store.dispatch(stateActions.setSessionState({ sipSession, sessionState: sessionStates.TERMINATED }));
+			store.dispatch(
+				stateActions.setSessionState({
+					sipSession,
+					sessionState : sessionStates.TERMINATED
+				})
+			);
 
-			const displayName = sipSession.remoteIdentity.displayName || sipSession.remoteIdentity.uri.user;
+			const displayName =
+				sipSession.remoteIdentity.displayName ||
+				sipSession.remoteIdentity.uri.user;
 			const sipUri = sipSession.remoteIdentity.uri.toString();
 
-			store.dispatch(stateActions.addSessionToHistory({ displayName, sipUri, startTime }));
+			store.dispatch(
+				stateActions.addSessionToHistory({
+					displayName,
+					sipUri,
+					startTime
+				})
+			);
 
 			setTimeout(() =>
 			{
 				logger.debug('SipSession removed [sipSession: %o]', sipSession);
 
 				store.dispatch(stateActions.removeSession({ sipSession }));
-			}, 5000);
+			}, 10000);
 		});
 
 		store.dispatch(stateActions.addSession({ sipSession, direction }));
@@ -277,6 +335,10 @@ export default class SipCaller
 		});
 
 		this._handleSession(sipSession, sessionStates.OUTGOING);
-		store.dispatch(stateActions.setCurrentSession({ currentSession : sipSession.request.callId }));
+		store.dispatch(
+			stateActions.setCurrentSession({
+				currentSession : sipSession.request.callId
+			})
+		);
 	}
-};
+}

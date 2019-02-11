@@ -2,11 +2,10 @@ import React from 'react';
 
 import './LoadingView.css';
 
-const LoadingView  = () =>
+const LoadingView = () =>
 {
 	return (
-		<div className='LoadingView'>
-		</div>
+		<div className='LoadingView' />
 	);
 };
 

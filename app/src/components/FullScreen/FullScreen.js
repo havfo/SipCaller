@@ -6,11 +6,9 @@ class FullScreen extends Component
 	render()
 	{
 		return (
-			<div className="FullScreen">
-				
-			</div>
+			<div className='FullScreen' />
 		);
 	}
-};
+}
 
 export default FullScreen;

@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-	setRequestUri
-} from '../../actions/stateActions';
+import * as stateActions from '../../actions/stateActions';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,14 +10,14 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) =>
-({
-	paper :
-	{
-		padding : theme.spacing.unit * 2
-	}
-});
+	({
+		paper :
+		{
+			padding : theme.spacing.unit * 2
+		}
+	});
 
-const SessionHistory  = (props) =>
+const SessionHistory = (props) =>
 {
 	const {
 		sessionHistory,
@@ -35,19 +33,20 @@ const SessionHistory  = (props) =>
 					{
 						return (
 							<ListItem
-								key={ index }
+								key={index}
 								button
-								onClick={ () => setRequestUri(entry.sipUri) }
+								onClick={() => setRequestUri(entry.sipUri)}
 							>
 								<ListItemText
-									primary={ entry.displayName }
-									secondary={ entry.sipUri }
+									primary={entry.displayName}
+									secondary={entry.sipUri}
 								/>
 							</ListItem>
 						);
 					})}
 				</List>
-				:<Typography
+				:
+				<Typography
 					color='inherit'
 					noWrap
 				>
@@ -61,17 +60,22 @@ const SessionHistory  = (props) =>
 SessionHistory.propTypes =
 {
 	sessionHistory : PropTypes.array.isRequired,
-	setRequestUri  : PropTypes.func.isRequired
+	setRequestUri  : PropTypes.func.isRequired,
+	classes        : PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) =>
-({
-	sessionHistory : state.sessionHistory
-});
+	({
+		sessionHistory : state.sessionHistory
+	});
 
 const mapDispatchToProps = (dispatch) =>
-({
-	setRequestUri : (requestUri) => dispatch(setRequestUri({ requestUri }))
-});
+	({
+		setRequestUri : (requestUri) => dispatch(
+			stateActions.setRequestUri({ requestUri }))
+	});
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SessionHistory));
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withStyles(styles)(SessionHistory));

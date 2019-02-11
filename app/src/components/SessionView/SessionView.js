@@ -16,34 +16,34 @@ import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 
 const styles = (theme) =>
-({
-	button :
-	{
-		margin : theme.spacing.unit
-	},
-	buttonList :
-	{
-		position  : 'absolute',
-		bottom    : '1vh',
-		transform : 'translate(-50%, 0)',
-		left      : '50%'
-	},
-	card :
-	{
-		position  : 'absolute',
-		bottom    : '50vh',
-		transform : 'translate(-50%, 0)',
-		left      : '50%',
-		textAlign : 'center'
-	},
-	sessionView :
-	{
-		position  : 'absolute',
-		width     : '100%',
-		height    : '100%',
-		textAlign : 'center'
-	}
-});
+	({
+		button :
+		{
+			margin : theme.spacing.unit
+		},
+		buttonList :
+		{
+			position  : 'absolute',
+			bottom    : '1vh',
+			transform : 'translate(-50%, 0)',
+			left      : '50%'
+		},
+		card :
+		{
+			position  : 'absolute',
+			bottom    : '50vh',
+			transform : 'translate(-50%, 0)',
+			left      : '50%',
+			textAlign : 'center'
+		},
+		sessionView :
+		{
+			position  : 'absolute',
+			width     : '100%',
+			height    : '100%',
+			textAlign : 'center'
+		}
+	});
 
 const SessionView = (props) =>
 {
@@ -56,11 +56,13 @@ const SessionView = (props) =>
 	if (session && session.sessionState === sessionStates.TERMINATED)
 	{
 		const sipSession = session.sipSession;
-		const displayName = sipSession.remoteIdentity.displayName || sipSession.remoteIdentity.uri.user;
+		const displayName =
+			sipSession.remoteIdentity.displayName ||
+			sipSession.remoteIdentity.uri.user;
 		const sipUri = sipSession.remoteIdentity.uri.toString();
 
 		return (
-			<Card className={ classes.card }>
+			<Card className={classes.card}>
 				<CardContent>
 					<Typography variant='h3' noWrap>
 						Session ended
@@ -80,27 +82,27 @@ const SessionView = (props) =>
 	if (session && session.remoteStream)
 	{
 		return (
-			<div className={ classes.sessionView }>
+			<div className={classes.sessionView}>
 				<MediaView
-					mediaStream={ session.remoteStream }
+					mediaStream={session.remoteStream}
 				/>
-				<div className={ classes.buttonList }>
+				<div className={classes.buttonList}>
 					<Fab
-						className={ classes.button }
+						className={classes.button}
 						aria-label='Add'
 						size='large'
 					>
 						<AddIcon />
 					</Fab>
 					<Fab
-						className={ classes.button }
+						className={classes.button}
 						aria-label='Mic'
 						size='large'
 					>
 						<MicIcon />
 					</Fab>
 					<Fab
-						className={ classes.button }
+						className={classes.button}
 						aria-label='Volume on'
 						size='large'
 					>
@@ -108,10 +110,10 @@ const SessionView = (props) =>
 					</Fab>
 					<Fab
 						color='secondary'
-						className={ classes.button }
+						className={classes.button}
 						aria-label='Hang up'
 						size='large'
-						onClick={ () => sipCaller.terminate(session.sipSession) }
+						onClick={() => sipCaller.terminate(session.sipSession)}
 					>
 						<CallEndIcon />
 					</Fab>
@@ -132,9 +134,9 @@ SessionView.propTypes =
 };
 
 const mapStateToProps = (state) =>
-({
-	session : state.sessions[state.userStatus.currentSession]
-});
+	({
+		session : state.sessions[state.userStatus.currentSession]
+	});
 
 export default withSipCallerContext(
 	connect(mapStateToProps, null)(withStyles(styles)(SessionView))

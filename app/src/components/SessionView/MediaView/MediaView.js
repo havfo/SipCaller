@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = (theme) =>
-({
-	videoView :
-	{
-		objectFit : 'cover',
-		width     : '100%',
-		height    : '100%'
-	}
-});
+const styles = () =>
+	({
+		videoView :
+		{
+			objectFit : 'cover',
+			width     : '100%',
+			height    : '100%'
+		}
+	});
 
 class MediaView extends Component
 {
 	constructor(props)
 	{
-		super(props)
+		super(props);
 
 		this._mediaStream = null;
 	}
@@ -27,7 +27,7 @@ class MediaView extends Component
 
 		return (
 			<video
-				className={ classes.videoView }
+				className={classes.videoView}
 				ref='video'
 				autoPlay
 				playsInline
@@ -52,13 +52,13 @@ class MediaView extends Component
 
 	_setStream(mediaStream)
 	{
-		if (this._mediaStream === mediaStream ) return;
+		if (this._mediaStream === mediaStream) return;
 
 		this._mediaStream = mediaStream;
 
 		const { video } = this.refs;
 
-		if ( mediaStream )
+		if (mediaStream)
 		{
 			video.srcObject = mediaStream;
 		}

@@ -4,7 +4,7 @@ export const setUser = ({
 	password,
 	outboundProxy,
 	autoRegister
-}) => dispatch =>
+}) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_USER',
@@ -19,7 +19,7 @@ export const setUser = ({
 	});
 };
 
-export const setDisplayName = ({ displayName }) => dispatch =>
+export const setDisplayName = ({ displayName }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_DISPLAY_NAME',
@@ -27,7 +27,7 @@ export const setDisplayName = ({ displayName }) => dispatch =>
 	});
 };
 
-export const setSipUri = ({ sipUri }) => dispatch =>
+export const setSipUri = ({ sipUri }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_SIP_URI',
@@ -35,7 +35,7 @@ export const setSipUri = ({ sipUri }) => dispatch =>
 	});
 };
 
-export const setPassword = ({ password }) => dispatch =>
+export const setPassword = ({ password }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_PASSWORD',
@@ -43,7 +43,7 @@ export const setPassword = ({ password }) => dispatch =>
 	});
 };
 
-export const setOutboundProxy = ({ outboundProxy }) => dispatch =>
+export const setOutboundProxy = ({ outboundProxy }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_OUTBOUND_PROXY',
@@ -51,7 +51,7 @@ export const setOutboundProxy = ({ outboundProxy }) => dispatch =>
 	});
 };
 
-export const setRequestUri = ({ requestUri }) => dispatch =>
+export const setRequestUri = ({ requestUri }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_REQUEST_URI',
@@ -59,7 +59,7 @@ export const setRequestUri = ({ requestUri }) => dispatch =>
 	});
 };
 
-export const setAutoRegister = ({ autoRegister }) => dispatch =>
+export const setAutoRegister = ({ autoRegister }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_AUTO_REGISTER',
@@ -67,7 +67,7 @@ export const setAutoRegister = ({ autoRegister }) => dispatch =>
 	});
 };
 
-export const setRegistered = ({ registered }) => dispatch =>
+export const setRegistered = ({ registered }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_REGISTERED',
@@ -75,14 +75,14 @@ export const setRegistered = ({ registered }) => dispatch =>
 	});
 };
 
-export const setRegisterInProgress = () => dispatch =>
+export const setRegisterInProgress = () => (dispatch) =>
 {
 	dispatch({
 		type : 'SET_REGISTER_IN_PROGRESS'
 	});
 };
 
-export const setRegistrationMessage = ({ registrationMessage }) => dispatch =>
+export const setRegistrationMessage = ({ registrationMessage }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_REGISTRATION_MESSAGE',
@@ -90,7 +90,7 @@ export const setRegistrationMessage = ({ registrationMessage }) => dispatch =>
 	});
 };
 
-export const addSession = ({ sipSession, direction }) => dispatch =>
+export const addSession = ({ sipSession, direction }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'ADD_SESSION',
@@ -98,7 +98,7 @@ export const addSession = ({ sipSession, direction }) => dispatch =>
 	});
 };
 
-export const removeSession = ({ sipSession }) => dispatch =>
+export const removeSession = ({ sipSession }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'REMOVE_SESSION',
@@ -106,7 +106,7 @@ export const removeSession = ({ sipSession }) => dispatch =>
 	});
 };
 
-export const addRemoteStream = ({ sipSession, remoteStream }) => dispatch =>
+export const addRemoteStream = ({ sipSession, remoteStream }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'ADD_REMOTE_STREAM',
@@ -114,7 +114,7 @@ export const addRemoteStream = ({ sipSession, remoteStream }) => dispatch =>
 	});
 };
 
-export const addLocalStream = ({ sipSession, localStream }) => dispatch =>
+export const addLocalStream = ({ sipSession, localStream }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'ADD_LOCAL_STREAM',
@@ -122,7 +122,7 @@ export const addLocalStream = ({ sipSession, localStream }) => dispatch =>
 	});
 };
 
-export const setSessionState = ({ sipSession, sessionState }) => dispatch =>
+export const setSessionState = ({ sipSession, sessionState }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_SESSION_STATE',
@@ -130,7 +130,7 @@ export const setSessionState = ({ sipSession, sessionState }) => dispatch =>
 	});
 };
 
-export const setCurrentSession = ({ currentSession }) => dispatch =>
+export const setCurrentSession = ({ currentSession }) => (dispatch) =>
 {
 	dispatch({
 		type    : 'SET_CURRENT_SESSION',
@@ -143,7 +143,7 @@ export const addSessionToHistory = ({
 	sipUri,
 	direction,
 	startTime
-}) => dispatch =>
+}) => (dispatch) =>
 {
 	dispatch({
 		type    : 'ADD_SESSION_ENTRY',
@@ -157,14 +157,14 @@ export const addSessionToHistory = ({
 	});
 };
 
-export const clearSessionHistory = () => dispatch =>
+export const clearSessionHistory = () => (dispatch) =>
 {
 	dispatch({
 		type : 'CLEAR_SESSION_HISTORY'
 	});
 };
 
-export const toggleVideo = () => dispatch =>
+export const toggleVideo = () => (dispatch) =>
 {
 	dispatch({
 		type : 'TOGGLE_VIDEO'
