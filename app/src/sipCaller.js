@@ -1,5 +1,6 @@
 import * as sip from 'sip.js';
 import * as stateActions from './actions/stateActions';
+import * as requestActions from './actions/requestActions';
 import * as sessionStates from './sessionStates';
 import Logger from './logger';
 
@@ -75,6 +76,13 @@ export default class SipCaller
 		{
 			logger.debug('Registered');
 
+			store.dispatch(requestActions.notify(
+				{
+					type : 'success',
+					text : 'Successfully registered.'
+				})
+			);
+
 			store.dispatch(stateActions.setRegistrationMessage({ registrationMessage: 'Success' }));
 			store.dispatch(stateActions.setRegistered({ registered: true }));
 		});
@@ -82,6 +90,13 @@ export default class SipCaller
 		this._ua.on('registrationFailed', (response, cause) =>
 		{
 			logger.debug('Registration failed [cause: %s]', cause);
+
+			store.dispatch(requestActions.notify(
+				{
+					type : 'error',
+					text : `Registration failed: ${cause}`
+				})
+			);
 
 			store.dispatch(stateActions.setRegistrationMessage({ registrationMessage: cause }));
 			store.dispatch(stateActions.setRegistered({ registered: false }));
@@ -91,6 +106,12 @@ export default class SipCaller
 		{
 			logger.debug('Unregistered [cause: %s]', cause);
 
+			store.dispatch(requestActions.notify(
+				{
+					text : `Unregistered: ${cause}`
+				})
+			);
+
 			store.dispatch(stateActions.setRegistrationMessage({ registrationMessage: cause }));
 			store.dispatch(stateActions.setRegistered({ registered: false }));
 		});
@@ -98,6 +119,12 @@ export default class SipCaller
 		this._ua.on('invite', (sipSession) =>
 		{
 			logger.debug('Incoming invite [sipSession: %o]', sipSession);
+
+			store.dispatch(requestActions.notify(
+				{
+					text : `Incoming call from: ${sipSession.remoteIdentity.uri.user}`
+				})
+			);
 
 			this._handleSession(sipSession, sessionStates.INCOMING);
 		});
@@ -255,6 +282,12 @@ export default class SipCaller
 				message,
 				cause,
 				sipSession
+			);
+
+			store.dispatch(requestActions.notify(
+				{
+					text : `Call terminated: ${sipSession.remoteIdentity.uri.user}`
+				})
 			);
 
 			store.dispatch(

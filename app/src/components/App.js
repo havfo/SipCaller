@@ -19,6 +19,7 @@ import SessionHistory from './SessionHistory/SessionHistory';
 import Sessions from './Sessions/Sessions';
 import Dialer from './Dialer/Dialer';
 import SessionView from './SessionView/SessionView';
+import Notifications from './Notifications/Notifications';
 
 const styles = (theme) =>
 	({
@@ -111,6 +112,7 @@ class App extends Component
 		return (
 			<div className={classes.root}>
 				<SessionView />
+				<Notifications />
 				<AppBar
 					position='static'
 					style={{ background: 'transparent', boxShadow: 'none' }}
