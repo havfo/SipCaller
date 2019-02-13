@@ -14,20 +14,20 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
 	container :
 	{
-		position       : 'absolute',
-		top            : '45px',
+		position       : 'fixed',
+		top            : 0,
 		right          : 0,
 		bottom         : 0,
 		padding        : 20,
 		display        : 'flex',
 		flexDirection  : 'column',
-		justifyContent : 'flex-start',
+		justifyContent : 'flex-end',
 		alignItems     : 'flex-end',
 		transition     : 'right 0.3s'
 	},
 	card :
 	{
-		maxWidth  : 345,
+		width     : 300,
 		marginTop : 5
 	}
 };
@@ -51,7 +51,7 @@ const SessionNotifications = (props) =>
 								<Typography gutterBottom variant='h6' component='h2'>
 									Incoming call
 								</Typography>
-								<Typography component='p'>
+								<Typography component='p' noWrap>
 									{ session.sipSession.remoteIdentity.displayName ||
 										session.sipSession.remoteIdentity.uri.user }
 								</Typography>
