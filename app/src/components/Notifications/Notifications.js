@@ -1,50 +1,72 @@
-import React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { withSnackbar } from 'notistack';
 import * as stateActions from '../../actions/stateActions';
-import Snackbar from '@material-ui/core/Snackbar';
-import MySnackbarContent from './MySnackbarContent';
 
-const Notifications = (props) =>
+class Notifications extends Component
 {
-	const {
-		notifications,
-		onClose
-	} = props;
+	displayed = [];
 
-	return (
-		<div>
-			{
-				notifications.map((notification) =>
+	storeDisplayed = (id) =>
+	{
+		this.displayed = [ ...this.displayed, id ];
+	};
+
+	shouldComponentUpdate({ notifications: newNotifications = [] })
+	{
+		const { notifications: currentNotifications } = this.props;
+
+		let notExists = false;
+
+		for (let i = 0; i < newNotifications.length; i += 1)
+		{
+			if (notExists) continue;
+
+			notExists = notExists ||
+				!currentNotifications.filter(({ id }) => newNotifications[i].id === id).length;
+		}
+
+		return notExists;
+	}
+
+	componentDidUpdate()
+	{
+		const { notifications = [] } = this.props;
+
+		notifications.forEach((notification) =>
+		{
+			// Do nothing if snackbar is already displayed
+			if (this.displayed.includes(notification.id)) return;
+			// Display snackbar using notistack
+			this.props.enqueueSnackbar(notification.text,
 				{
-					return (
-						<Snackbar
-							key={notification.id}
-							anchorOrigin={{
-								vertical   : 'bottom',
-								horizontal : 'right',
-							}}
-							open={Boolean(true)}
-							autoHideDuration={notification.timeout}
-							onClose={() => onClose(notification.id)}
-						>
-							<MySnackbarContent
-								onClose={() => onClose(notification.id)}
-								variant={notification.type}
-								message={notification.text}
-							/>
-						</Snackbar>
-					);
-				})
-			}
-		</div>
-	);
-};
+					variant          : notification.type,
+					autoHideDuration : notification.timeout,
+					anchorOrigin     : {
+						vertical   : 'bottom',
+						horizontal : 'left'
+					}
+				}
+			);
+			// Keep track of snackbars that we've displayed
+			this.storeDisplayed(notification.id);
+			// Dispatch action to remove snackbar from redux store
+			this.props.removeNotification(notification.id);
+		});
+	}
+
+	render()
+	{
+		return null;
+	}
+}
 
 Notifications.propTypes =
 {
-	notifications : PropTypes.array.isRequired,
-	onClose       : PropTypes.func.isRequired
+	notifications      : PropTypes.array.isRequired,
+	enqueueSnackbar    : PropTypes.func.isRequired,
+	removeNotification : PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) =>
@@ -54,11 +76,10 @@ const mapStateToProps = (state) =>
 
 const mapDispatchToProps = (dispatch) =>
 	({
-		onClose : (notificationId) =>
+		removeNotification : (notificationId) =>
 			dispatch(stateActions.removeNotification(notificationId))
 	});
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Notifications);
+export default withSnackbar(
+	connect(mapStateToProps, mapDispatchToProps)(Notifications)
+);

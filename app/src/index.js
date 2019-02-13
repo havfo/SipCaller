@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { persistor, store } from './store';
+import { SnackbarProvider } from 'notistack';
 import debug from 'debug';
 import Logger from './logger';
 import SipCallerContext from './sipCallerContext';
@@ -44,7 +45,9 @@ function run()
 		<Provider store={store}>
 			<PersistGate loading={<LoadingView />} persistor={persistor}>
 				<SipCallerContext.Provider value={sipCaller}>
-					<App />
+					<SnackbarProvider>
+						<App />
+					</SnackbarProvider>
 				</SipCallerContext.Provider>
 			</PersistGate>
 		</Provider>,
