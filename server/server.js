@@ -10,7 +10,6 @@ const https = require('https');
 const http = require('http');
 const express = require('express');
 const compression = require('compression');
-const url = require('url');
 const Logger = require('./lib/Logger');
 
 /* eslint-disable no-console */
