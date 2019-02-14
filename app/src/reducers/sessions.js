@@ -3,11 +3,15 @@ import * as sessionStates from '../sessionStates';
 
 const initialState =
 {
-	sipSession   : null, // SIP.js session object
-	direction    : null,
-	remoteStream : null, // MediaStream
-	localStream  : null, // MediaStream
-	sessionState : sessionStates.NEW // State of session
+	sipSession       : null, // SIP.js session object
+	direction        : null,
+	remoteStream     : null, // MediaStream
+	remoteAudioMuted : false,
+	remoteVideoMuted : false,
+	localStream      : null, // MediaStream
+	localAudioMuted  : false,
+	localVideoMuted  : false,
+	sessionState     : sessionStates.NEW // State of session
 };
 
 const session = (state = initialState, action) =>
@@ -51,6 +55,34 @@ const session = (state = initialState, action) =>
 			return { ...state, sessionState };
 		}
 
+		case 'TOGGLE_LOCAL_AUDIO':
+		{
+			const localAudioMuted = !state.localAudioMuted;
+
+			return { ...state, localAudioMuted };
+		}
+
+		case 'TOGGLE_LOCAL_VIDEO':
+		{
+			const localVideoMuted = !state.localVideoMuted;
+
+			return { ...state, localVideoMuted };
+		}
+
+		case 'TOGGLE_REMOTE_AUDIO':
+		{
+			const remoteAudioMuted = !state.remoteAudioMuted;
+
+			return { ...state, remoteAudioMuted };
+		}
+
+		case 'TOGGLE_REMOTE_VIDEO':
+		{
+			const remoteVideoMuted = !state.remoteVideoMuted;
+
+			return { ...state, remoteVideoMuted };
+		}
+
 		default:
 			return state;
 	}
@@ -85,6 +117,10 @@ const sessions = (state = {}, action) =>
 			return omit(state, callId);
 		}
 
+		case 'TOGGLE_LOCAL_AUDIO':
+		case 'TOGGLE_LOCAL_VIDEO':
+		case 'TOGGLE_REMOTE_AUDIO':
+		case 'TOGGLE_REMOTE_VIDEO':
 		case 'ADD_REMOTE_STREAM':
 		case 'ADD_LOCAL_STREAM':
 		case 'SET_SESSION_STATE':

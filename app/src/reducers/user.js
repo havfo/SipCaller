@@ -6,7 +6,8 @@ const initialState =
 	outboundProxy : null,
 	autoRegister  : false,
 	videoEnabled  : true,
-	requestUri    : null
+	requestUri    : null,
+	transferUri   : null
 };
 
 const user = (state = initialState, action) =>
@@ -80,6 +81,13 @@ const user = (state = initialState, action) =>
 			const { requestUri } = action.payload;
 
 			return { ...state, requestUri };
+		}
+
+		case 'SET_TRANSFER_URI':
+		{
+			const { transferUri } = action.payload;
+
+			return { ...state, transferUri };
 		}
 
 		default:

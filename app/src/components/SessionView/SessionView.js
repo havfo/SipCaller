@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withSipCallerContext } from '../../sipCallerContext';
 import { withStyles } from '@material-ui/core/styles';
+import * as stateActions from '../../actions/stateActions';
 import * as sessionStates from '../../sessionStates';
 import MediaView from './MediaView/MediaView';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import VolumeOnIcon from '@material-ui/icons/VolumeUp';
+import TransferIcon from '@material-ui/icons/CallSplit';
+import VideoIcon from '@material-ui/icons/Videocam';
+import VideoOffIcon from '@material-ui/icons/VideocamOff';
 import CallEndIcon from '@material-ui/icons/CallEnd';
-import MicIcon from '@material-ui/icons/Mic';
+import AudioIcon from '@material-ui/icons/VolumeUp';
+import AudioOffIcon from '@material-ui/icons/VolumeOff';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 const styles = (theme) =>
 	({
@@ -45,99 +55,184 @@ const styles = (theme) =>
 		}
 	});
 
-const SessionView = (props) =>
+class SessionView extends Component
 {
-	const {
-		sipCaller,
-		session,
-		classes
-	} = props;
-
-	if (session && session.sessionState === sessionStates.TERMINATED)
+	state =
 	{
-		const sipSession = session.sipSession;
-		const displayName =
-			sipSession.remoteIdentity.displayName ||
-			sipSession.remoteIdentity.uri.user;
-		const sipUri = sipSession.remoteIdentity.uri.toString();
+		open : false
+	};
+	
+	handleClickOpen = () =>
+	{
+		this.setState({ open: true });
+	};
+	
+	handleClose = () =>
+	{
+		this.setState({ open: false });
+	};
 
-		return (
-			<Card className={classes.card}>
-				<CardContent>
-					<Typography variant='h3' noWrap>
-						Session ended
-					</Typography>
-					<Divider />
-					<Typography variant='h4' noWrap>
-						{ displayName }
-					</Typography>
-					<Typography variant='h5' noWrap>
-						{ sipUri }
-					</Typography>
-				</CardContent>
-			</Card>
-		);
+	handleTransfer = () =>
+	{
+		this.handleClose();
+
+		const {
+			sipCaller,
+			session,
+			transferUri
+		} = this.props;
+
+		sipCaller.refer(session.sipSession, transferUri);
 	}
 
-	if (session && session.remoteStream)
+	render()
 	{
-		return (
-			<div className={classes.sessionView}>
-				<MediaView
-					mediaStream={session.remoteStream}
-				/>
-				<div className={classes.buttonList}>
-					<Fab
-						className={classes.button}
-						aria-label='Add'
-						size='large'
+		const {
+			sipCaller,
+			session,
+			transferUri,
+			setTransferUri,
+			classes
+		} = this.props;
+
+		if (session && session.sessionState === sessionStates.TERMINATED)
+		{
+			const sipSession = session.sipSession;
+			const displayName =
+				sipSession.remoteIdentity.displayName ||
+				sipSession.remoteIdentity.uri.user;
+			const sipUri = sipSession.remoteIdentity.uri.toString();
+
+			return (
+				<Card className={classes.card}>
+					<CardContent>
+						<Typography variant='h3' noWrap>
+							Session ended
+						</Typography>
+						<Divider />
+						<Typography variant='h4' noWrap>
+							{ displayName }
+						</Typography>
+						<Typography variant='h5' noWrap>
+							{ sipUri }
+						</Typography>
+					</CardContent>
+				</Card>
+			);
+		}
+
+		if (session && session.remoteStream)
+		{
+			return (
+				<div className={classes.sessionView}>
+					<MediaView
+						mediaStream={session.remoteStream}
+					/>
+					<Dialog
+						open={this.state.open}
+						onClose={this.handleClose}
+						aria-labelledby='form-dialog-title'
 					>
-						<AddIcon />
-					</Fab>
-					<Fab
-						className={classes.button}
-						aria-label='Mic'
-						size='large'
-					>
-						<MicIcon />
-					</Fab>
-					<Fab
-						className={classes.button}
-						aria-label='Volume on'
-						size='large'
-					>
-						<VolumeOnIcon />
-					</Fab>
-					<Fab
-						color='secondary'
-						className={classes.button}
-						aria-label='Hang up'
-						size='large'
-						onClick={() => sipCaller.terminate(session.sipSession)}
-					>
-						<CallEndIcon />
-					</Fab>
+						<DialogTitle id='form-dialog-title'>Transfer session</DialogTitle>
+						<DialogContent>
+							<DialogContentText>
+								To transfer this session, type the SIP URI you want to
+								transfer to below.
+							</DialogContentText>
+							<TextField
+								autoFocus
+								margin='dense'
+								id='sipUri'
+								label='SIP URI'
+								type='email'
+								value={transferUri || ''}
+								onChange={(event) => setTransferUri(event.target.value)}
+								fullWidth
+							/>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={this.handleClose} color='primary'>
+								Cancel
+							</Button>
+							<Button onClick={this.handleTransfer} color='primary'>
+								Transfer
+							</Button>
+						</DialogActions>
+					</Dialog>
+					<div className={classes.buttonList}>
+						<Fab
+							className={classes.button}
+							aria-label='Audio on/off'
+							size='large'
+							onClick={() => sipCaller.toggleMedia(session.sipSession, 'audio', !session.remoteAudioMuted)}
+						>
+							{ session.remoteAudioMuted ?
+								<AudioOffIcon />
+								:
+								<AudioIcon />
+							}
+						</Fab>
+						<Fab
+							className={classes.button}
+							aria-label='Video on/off'
+							size='large'
+							onClick={() => sipCaller.toggleMedia(session.sipSession, 'video', !session.remoteVideoMuted)}
+						>
+							{ session.remoteVideoMuted ?
+								<VideoOffIcon />
+								:
+								<VideoIcon />
+							}
+						</Fab>
+						<Fab
+							className={classes.button}
+							aria-label='Video on/off'
+							size='large'
+							onClick={this.handleClickOpen}
+						>
+							<TransferIcon />
+						</Fab>
+						<Fab
+							color='secondary'
+							className={classes.button}
+							aria-label='Hang up'
+							size='large'
+							onClick={() => sipCaller.terminate(session.sipSession)}
+						>
+							<CallEndIcon />
+						</Fab>
+					</div>
 				</div>
-			</div>
-		);
+			);
+		}
+		else
+		{
+			return null;
+		}
 	}
-	else
-	{
-		return null;
-	}
-};
+}
 
 SessionView.propTypes =
 {
-	sipCaller : PropTypes.object.isRequired,
-	session   : PropTypes.object
+	sipCaller      : PropTypes.object.isRequired,
+	session        : PropTypes.object,
+	transferUri    : PropTypes.string,
+	setTransferUri : PropTypes.func.isRequired,
+	classes        : PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) =>
 	({
-		session : state.sessions[state.userStatus.currentSession]
+		session     : state.sessions[state.userStatus.currentSession],
+		transferUri : state.user.transferUri
+	});
+
+const mapDispatchToProps = (dispatch) =>
+	({
+		setTransferUri : (transferUri) => dispatch(
+			stateActions.setTransferUri({ transferUri }))
 	});
 
 export default withSipCallerContext(
-	connect(mapStateToProps, null)(withStyles(styles)(SessionView))
+	connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SessionView))
 );

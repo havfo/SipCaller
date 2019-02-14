@@ -86,6 +86,16 @@ const Dialer = (props) =>
 						}}
 						value={requestUri || ''}
 						onChange={(event) => setRequestUri(event.target.value)}
+						onKeyPress={(ev) =>
+						{
+							if (ev.key === 'Enter')
+							{
+								ev.preventDefault();
+
+								sipCaller.invite(requestUri);
+							}
+						}}
+						autoFocus
 					/>
 				</div>
 			</Grid>

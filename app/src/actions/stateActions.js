@@ -59,6 +59,14 @@ export const setRequestUri = ({ requestUri }) => (dispatch) =>
 	});
 };
 
+export const setTransferUri = ({ transferUri }) => (dispatch) =>
+{
+	dispatch({
+		type    : 'SET_TRANSFER_URI',
+		payload : { transferUri }
+	});
+};
+
 export const setAutoRegister = ({ autoRegister }) => (dispatch) =>
 {
 	dispatch({
@@ -119,6 +127,38 @@ export const addLocalStream = ({ sipSession, localStream }) => (dispatch) =>
 	dispatch({
 		type    : 'ADD_LOCAL_STREAM',
 		payload : { sipSession, localStream }
+	});
+};
+
+export const toggleRemoteAudio = ({ sipSession }) => (dispatch) =>
+{
+	dispatch({
+		type    : 'TOGGLE_REMOTE_AUDIO',
+		payload : { sipSession }
+	});
+};
+
+export const toggleRemoteVideo = ({ sipSession }) => (dispatch) =>
+{
+	dispatch({
+		type    : 'TOGGLE_REMOTE_VIDEO',
+		payload : { sipSession }
+	});
+};
+
+export const toggleLocalAudio = ({ sipSession }) => (dispatch) =>
+{
+	dispatch({
+		type    : 'TOGGLE_LOCAL_AUDIO',
+		payload : { sipSession }
+	});
+};
+
+export const toggleLocalVideo = ({ sipSession }) => (dispatch) =>
+{
+	dispatch({
+		type    : 'TOGGLE_LOCAL_VIDEO',
+		payload : { sipSession }
 	});
 };
 

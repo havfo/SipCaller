@@ -179,6 +179,39 @@ export default class SipCaller
 			this._handleSession(newSipSession, direction);
 		});
 
+		sipSession.on('referRequested', (context) =>
+		{
+			// Outgoing REFER
+			if (context instanceof sip.ReferClientContext)
+			{
+				context.on('referRequestAccepted', () =>
+				{
+					store.dispatch(
+						stateActions.setSessionState({
+							sipSession,
+							sessionState : sessionStates.REFER_REQUEST_ACCEPTED
+						})
+					);
+				});
+
+				context.on('referRequestRejected', () =>
+				{
+					store.dispatch(
+						stateActions.setSessionState({
+							sipSession,
+							sessionState : sessionStates.REFER_REQUEST_REJECTED
+						})
+					);
+				});
+			}
+
+			// Incoming REFER
+			if (context instanceof sip.ReferServerContext)
+			{
+				context.accept();
+			}
+		});
+
 		sipSession.on('directionChanged', () =>
 		{
 			const newDirection = sipSession.sessionDescriptionHandler.getDirection();
@@ -315,7 +348,21 @@ export default class SipCaller
 				logger.debug('SipSession removed [sipSession: %o]', sipSession);
 
 				store.dispatch(stateActions.removeSession({ sipSession }));
-			}, 10000);
+
+				if (!store.getState().userStatus.currentSession)
+				{
+					const sessions = store.getState().sessions;
+
+					if (sessions)
+					{
+						store.dispatch(
+							stateActions.setCurrentSession({
+								currentSession : Object.keys(sessions)[0]
+							})
+						);
+					}
+				}
+			}, 3000);
 		});
 
 		store.dispatch(stateActions.addSession({ sipSession, direction }));
@@ -373,5 +420,79 @@ export default class SipCaller
 				currentSession : sipSession.request.callId
 			})
 		);
+	}
+
+	refer(sipSession, sipUri)
+	{
+		logger.debug(
+			'refer() [sipSession: %o, sipUri: %s]',
+			sipSession,
+			sipUri
+		);
+
+		sipSession.refer(sipUri);
+	}
+
+	toggleMedia(sipSession, type, mute)
+	{
+		logger.debug(
+			'toggleMedia() [sipSession: %o, type: %s, mute: %s]',
+			sipSession,
+			type,
+			mute
+		);
+
+		const callId = sipSession.request.callId;
+		const remoteStream = store.getState().sessions[callId].remoteStream;
+
+		if (!remoteStream) return;
+
+		if (type === 'audio')
+		{
+			remoteStream.getAudioTracks()[0].enabled = !mute;
+
+			store.dispatch(
+				stateActions.toggleRemoteAudio({
+					sipSession
+				})
+			);
+		}
+		else if (type === 'video')
+		{
+			remoteStream.getVideoTracks()[0].enabled = !mute;
+
+			store.dispatch(
+				stateActions.toggleRemoteVideo({
+					sipSession
+				})
+			);
+		}
+		else
+		{
+			throw new Error('Unknown media type.');
+		}
+	}
+
+	toggleMyMedia(session, type, mute)
+	{
+		logger.debug(
+			'toggleMyMedia() [session: %o, type: %s, mute: %s]',
+			session,
+			type,
+			mute
+		);
+
+		if (type === 'audio')
+		{
+			session.localStream.getAudioTracks()[0].enabled = !mute;
+		}
+		else if (type === 'video')
+		{
+			session.localStream.getVideoTracks()[0].enabled = !mute;
+		}
+		else
+		{
+			throw new Error('Unknown media type.');
+		}
 	}
 }
