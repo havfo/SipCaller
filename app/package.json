@@ -21,9 +21,12 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
-    "sip.js": "^0.13.0"
+    "sip.js": "^0.13.0",
+    "source-map-explorer": "^1.6.0"
   },
   "scripts": {
+    "analyze-main": "source-map-explorer build/static/js/main.*",
+    "analyze-first": "source-map-explorer build/static/js/1.*",
     "start": "HTTPS=true PORT=4443 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
