@@ -49,6 +49,9 @@ export default class SipCaller
 			outboundProxy
 		} = store.getState().user;
 
+		// This is inserted in config.js in index.html
+		const iceServers = window.iceServers;
+
 		store.dispatch(stateActions.setRegisterInProgress());
 
 		this._ua = new sip.UA({
@@ -62,11 +65,7 @@ export default class SipCaller
 			sessionDescriptionHandlerFactoryOptions : {
 				peerConnectionOptions : {
 					rtcConfiguration : {
-						iceServers : [ {
-							urls       : 'turn:turn.uninett.no:443?transport=tcp',
-							username   : 'websip',
-							credential : 'websip'
-						} ]
+						iceServers
 					}
 				}
 			}
