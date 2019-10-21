@@ -33,7 +33,7 @@ Web `app` has own detailed README for development.
  Configure: copy `config.example.js` into `config.js`,  
  adjust file name for certificate and key.
  
- Run server. (You may need add `sudo` on Ubuntu 18.04, that has by default lower ports as privilaged )
+ Run server. (You may need add `sudo` on Ubuntu 18.04, that has by default lower ports as privileged )
  
      sudo node server
  
