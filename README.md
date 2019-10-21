@@ -27,7 +27,10 @@ Web `app` has own detailed README for development.
      
      
  Generate certificate in `certs` folder
- (follow https://letsencrypt.org/docs/certificates-for-localhost/ 
+ 
+     openssl req -x509 -newkey rsa:4096 -keyout localhost.key.pem -out localhost.cert.pem -days 365
+ 
+ (or check other options at https://letsencrypt.org/docs/certificates-for-localhost/ 
  or https://stackoverflow.com/questions/9519707/can-nodejs-generate-ssl-certificates )
  
  Configure: copy `config.example.js` into `config.js`,  
